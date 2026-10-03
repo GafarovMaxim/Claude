@@ -1,0 +1,12 @@
+{
+  "name": "max-marketplace",
+  "owner": { "name": "Maxim" },
+  "description": "Личные плагины Максима",
+  "plugins": [
+    {
+      "name": "max-kit",
+      "source": "./plugins/max-kit",
+      "description": "Агент web-researcher, скиллы web-search и health-tracker, правило пула агентов"
+    }
+  ]
+}
