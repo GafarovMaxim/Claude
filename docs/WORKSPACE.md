@@ -8,7 +8,7 @@
 - В нём маркетплейс `max-marketplace` (`.claude-plugin/marketplace.json`) и плагин `max-kit` (`plugins/max-kit/`).
 - Плагин подключён в claude.ai: Customize → Plugins → Add marketplace → `GafarovMaxim/Claude`, с автосинхронизацией. Новые версии доезжают до всех проектов, тредов, Cowork и Claude Code на компьютере.
 
-## Что внутри max-kit (версия 1.2.0)
+## Что внутри max-kit (версия 1.2.1)
 
 | Что | Тип | Зачем |
 |---|---|---|
