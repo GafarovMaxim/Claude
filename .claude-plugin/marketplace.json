@@ -6,7 +6,7 @@
     {
       "name": "max-kit",
       "source": "./plugins/max-kit",
-      "description": "Агент web-researcher, скиллы web-search и health-tracker, правило пула агентов"
+      "description": "Агенты mentor и web-researcher, скиллы web-search и health-tracker, правило пула агентов"
     }
   ]
 }
