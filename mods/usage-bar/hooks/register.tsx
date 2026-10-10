@@ -1,48 +1,49 @@
-import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { Usage } from '../types'
+const words = {
+  ru: { context: 'Контекст', five: '5 ч', week: 'неделя' },
+  en: { context: 'Context', five: '5h', week: 'week' },
+  de: { context: 'Kontext', five: '5 Std', week: 'Woche' },
+  fr: { context: 'Contexte', five: '5 h', week: 'semaine' },
+  es: { context: 'Contexto', five: '5 h', week: 'semana' }
+} as const
 
-const usage = atom(
-  { plugin: 'usage-bar', key: 'usage' } as const,
-  { context: null, fiveHour: null, sevenDay: null } as Usage
-)
+type Lang = keyof typeof words
+
+// Язык берём из настройки language (язык ответов Claude), иначе из LANG/LC_ALL; по умолчанию английский.
+const pickLang = (raw: unknown): Lang => {
+  const s = String(raw ?? '').toLowerCase()
+  const code = (Object.keys(words) as Lang[]).find(
+    l => s === l || s.startsWith(l + '_') || s.startsWith(l + '-') || s.startsWith(l === 'ru' ? 'рус' : l === 'en' ? 'english' : '\0')
+  )
+
+  return code ?? 'en'
+}
 
 const find = (limits: readonly { kind: string; percentUsed: number }[], kind: string) =>
   limits.find(l => l.kind === kind)?.percentUsed ?? null
 
-const fmt = (v: number | null) => (v === null ? '—' : `${Math.round(v)}%`)
+const fmt = (v: number | null) => (v === null ? '—' : `${Math.round(v)}%${v >= 85 ? '!' : ''}`)
 
 export const register: Register = on => {
-  on('session.measure', async ($, e, next) => {
-    await update($, usage, () => ({
-      context: e.context.percent ?? null,
-      fiveHour: find(e.rateLimits, 'five_hour'),
-      sevenDay: find(e.rateLimits, 'seven_day')
-    }))
+  let lang: Lang = 'en'
+
+  on('session.start', async ($, e, next) => {
+    const { language } = (await $.settings.read()) as { language?: string }
+    const env = language ?? (await $.env.get('LC_ALL')) ?? (await $.env.get('LANG'))
+    lang = pickLang(env)
 
     return next(e)
   })
 
-  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    const u = await read($, usage)
+  // Строка под окном ввода: $.ui.status закрепляет текст под строкой ввода.
+  on('session.measure', async ($, e, next) => {
+    const w = words[lang]
+    const ctx = fmt(e.context.percent ?? null)
+    const five = fmt(find(e.rateLimits, 'five_hour'))
+    const week = fmt(find(e.rateLimits, 'seven_day'))
+    $.ui.status(`${w.context} ${ctx} · ${w.five} ${five} · ${w.week} ${week}`)
 
-    if (e.props.hasSurvey) {
-      return next(e)
-    }
-
-    const { Box, Text } = $.ui.resolve(e)
-    const warn = (v: number | null) => v !== null && v >= 85
-
-    return (
-      <Box>
-        <Text dimColor>Контекст </Text>
-        <Text color={warn(u.context) ? 'red' : undefined}>{fmt(u.context)}</Text>
-        <Text dimColor> · 5 ч </Text>
-        <Text color={warn(u.fiveHour) ? 'red' : undefined}>{fmt(u.fiveHour)}</Text>
-        <Text dimColor> · неделя </Text>
-        <Text color={warn(u.sevenDay) ? 'red' : undefined}>{fmt(u.sevenDay)}</Text>
-      </Box>
-    )
+    return next(e)
   })
 }
