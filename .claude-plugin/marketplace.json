@@ -1,12 +1,19 @@
 {
   "name": "max-marketplace",
-  "owner": { "name": "Maxim" },
+  "owner": {
+    "name": "Maxim"
+  },
   "description": "Личные плагины Максима",
   "plugins": [
     {
       "name": "max-kit",
       "source": "./plugins/max-kit",
       "description": "Агенты mentor и web-researcher, скиллы web-search и health-tracker, правило пула агентов"
+    },
+    {
+      "name": "usage-bar",
+      "source": "./mods/usage-bar",
+      "description": "Строка под окном ввода: контекст, 5-часовой и недельный лимиты"
     }
   ]
 }
