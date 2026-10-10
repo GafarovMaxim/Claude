@@ -36,14 +36,15 @@ export const register: Register = on => {
     return next(e)
   })
 
-  // Строка под окном ввода: $.ui.status закрепляет текст под строкой ввода.
-  on('session.measure', async ($, e, next) => {
+  // Подсказка под окном ввода (PromptHint) рисуется и в терминале, и в Desktop.
+  on('ui.render', { component: 'PromptHint' }, async ($, e, next) => {
+    const u = await $.session.usage()
     const w = words[lang]
-    const ctx = fmt(e.context.percent ?? null)
-    const five = fmt(find(e.rateLimits, 'five_hour'))
-    const week = fmt(find(e.rateLimits, 'seven_day'))
-    $.ui.status(`${w.context} ${ctx} · ${w.five} ${five} · ${w.week} ${week}`)
+    const ctx = fmt(u.context.percent ?? null)
+    const five = fmt(find(u.rateLimits, 'five_hour'))
+    const week = fmt(find(u.rateLimits, 'seven_day'))
+    const { Text } = $.ui.resolve(e)
 
-    return next(e)
+    return <Text dimColor>{`${w.context} ${ctx} · ${w.five} ${five} · ${w.week} ${week}`}</Text>
   })
 }
