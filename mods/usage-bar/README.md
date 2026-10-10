@@ -9,3 +9,9 @@
 Установка (только по согласию Максима): положить папку в `~/.claude/dev-mods/<сессия>/usage-bar/` или подключить через `--plugin-dir`.
 
 Проверка: `claude plugin validate mods/usage-bar` и `claude plugin test mods/usage-bar`.
+
+Установка одной строкой в терминальной сессии Claude Code (после слияния PR):
+
+```
+/plugin install usage-bar --marketplace GafarovMaxim/Claude
+```
