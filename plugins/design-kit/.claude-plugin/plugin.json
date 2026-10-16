@@ -1,0 +1,7 @@
+{
+  "name": "design-kit",
+  "displayName": "Design Kit",
+  "version": "0.1.0",
+  "description": "Набор Максима для дизайна: агент card-reviewer проверяет слайды карточек маркетплейсов (WB, Ozon) по стайлгайду проекта и техническим правилам до показа заказчику.",
+  "author": { "name": "Maxim" }
+}

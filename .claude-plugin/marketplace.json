@@ -11,6 +11,11 @@
       "description": "Агенты mentor и web-researcher, скиллы web-search и health-tracker, правило пула агентов"
     },
     {
+      "name": "design-kit",
+      "source": "./plugins/design-kit",
+      "description": "Агент card-reviewer: проверка слайдов карточек маркетплейсов по стайлгайду до показа"
+    },
+    {
       "name": "usage-bar",
       "source": "./mods/usage-bar",
       "description": "Строка под окном ввода: контекст, 5-часовой и недельный лимиты"

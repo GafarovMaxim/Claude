@@ -5,7 +5,7 @@
 ## Главное
 
 - Этот репозиторий (`GafarovMaxim/Claude`, приватный) единственный источник правды для личного пула агентов и скиллов.
-- В нём маркетплейс `max-marketplace` (`.claude-plugin/marketplace.json`) и плагин `max-kit` (`plugins/max-kit/`).
+- В нём маркетплейс `max-marketplace` (`.claude-plugin/marketplace.json`) и плагины `max-kit` (`plugins/max-kit/`, общий пул) и `design-kit` (`plugins/design-kit/`, работа с дизайном).
 - Плагин подключён в claude.ai: Customize → Plugins → Add marketplace → `GafarovMaxim/Claude`, с автосинхронизацией. Новые версии доезжают до всех проектов, тредов, Cowork и Claude Code на компьютере.
 
 ## Что внутри max-kit (версия 1.2.1)
@@ -18,12 +18,20 @@
 | `skills/health-tracker` | скилл | дневник здоровья, сводки, меню на неделю, список покупок (проект «Здоровье») |
 | `hooks/agent-pool.md` + `hooks/hooks.json` | правило при старте сессии | в любом проекте брать подходящих агентов из пула max-kit по задаче, а весь поиск в интернете отдавать web-researcher |
 
+## Что внутри design-kit (версия 0.1.0)
+
+| Что | Тип | Зачем |
+|---|---|---|
+| `agents/card-reviewer.md` | агент (Sonnet, только чтение; Bash для кропа и замеров через PIL) | свежий взгляд на слайды карточек маркетплейсов до показа: правила WB, повторы, текст на товаре, кайма, недокрас, тени, шрифты; сверяет со `стайлгайд.md` проекта |
+
+Агенты для дизайна (карточки, Figma, инфографика) кладутся в design-kit, остальные в max-kit.
+
 Агент и скилл разные вещи: скилл это инструкция, по которой Claude работает сам; агент это отдельный помощник со своей моделью и инструментами, который возвращает короткий итог.
 
 ## Как добавить агента или скилл
 
-1. Агент: файл `plugins/max-kit/agents/<имя>.md` с полями `name`, `description` (писать «MUST BE USED proactively for …»), `tools`, `model`. Скилл: папка `plugins/max-kit/skills/<имя>/SKILL.md`.
-2. Поднять `version` в `plugins/max-kit/.claude-plugin/plugin.json`.
+1. Агент: файл `plugins/max-kit/agents/<имя>.md` (для дизайна `plugins/design-kit/agents/<имя>.md`) с полями `name`, `description` (писать «MUST BE USED proactively for …»), `tools`, `model`. Скилл: папка `plugins/max-kit/skills/<имя>/SKILL.md`.
+2. Поднять `version` в `.claude-plugin/plugin.json` этого плагина.
 3. Проверить: `claude plugin validate .`
 4. Закоммитить и запушить в `main`. Через несколько минут изменение появится везде. В уже открытой сессии Claude Code: `/reload-plugins`.
 5. Если нужен вызов агента по умолчанию, добавить строку в `plugins/max-kit/hooks/agent-pool.md`.
