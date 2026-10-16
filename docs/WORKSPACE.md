@@ -18,23 +18,24 @@
 | `skills/health-tracker` | скилл | дневник здоровья, сводки, меню на неделю, список покупок (проект «Здоровье») |
 | `hooks/agent-pool.md` + `hooks/hooks.json` | правило при старте сессии | в любом проекте брать подходящих агентов из пула max-kit по задаче, а весь поиск в интернете отдавать web-researcher |
 
-## Что внутри design-kit (версия 0.1.0)
+## Что внутри design-kit (версия 0.2.0)
 
 | Что | Тип | Зачем |
 |---|---|---|
 | `agents/card-reviewer.md` | агент (Sonnet, только чтение; Bash для кропа и замеров через PIL) | свежий взгляд на слайды карточек маркетплейсов до показа: правила WB, повторы, текст на товаре, кайма, недокрас, тени, шрифты; сверяет со `стайлгайд.md` проекта |
+| `hooks/design-rules.md` + `hooks/hooks.json` | правило при старте сессии | перед показом слайдов Максиму или заказчику прогнать их через card-reviewer и исправить замечания |
 
-Агенты для дизайна (карточки, Figma, инфографика) кладутся в design-kit, остальные в max-kit.
+Всё для дизайна (карточки, Figma, инфографика) кладётся в design-kit: агенты, скиллы и хуки, включая правила вызова агентов по умолчанию. В max-kit для дизайна ничего не добавляется.
 
 Агент и скилл разные вещи: скилл это инструкция, по которой Claude работает сам; агент это отдельный помощник со своей моделью и инструментами, который возвращает короткий итог.
 
 ## Как добавить агента или скилл
 
-1. Агент: файл `plugins/max-kit/agents/<имя>.md` (для дизайна `plugins/design-kit/agents/<имя>.md`) с полями `name`, `description` (писать «MUST BE USED proactively for …»), `tools`, `model`. Скилл: папка `plugins/max-kit/skills/<имя>/SKILL.md`.
+1. Агент: файл `plugins/max-kit/agents/<имя>.md` (для дизайна `plugins/design-kit/agents/<имя>.md`) с полями `name`, `description` (писать «MUST BE USED proactively for …»), `tools`, `model`. Скилл: папка `plugins/max-kit/skills/<имя>/SKILL.md` (для дизайна `plugins/design-kit/skills/<имя>/SKILL.md`).
 2. Поднять `version` в `.claude-plugin/plugin.json` этого плагина.
 3. Проверить: `claude plugin validate .`
 4. Закоммитить и запушить в `main`. Через несколько минут изменение появится везде. В уже открытой сессии Claude Code: `/reload-plugins`.
-5. Если нужен вызов агента по умолчанию, добавить строку в `plugins/max-kit/hooks/agent-pool.md`.
+5. Если нужен вызов агента по умолчанию, добавить строку в `plugins/max-kit/hooks/agent-pool.md` (для дизайна в `plugins/design-kit/hooks/design-rules.md`).
 
 ## Что где лежит
 
