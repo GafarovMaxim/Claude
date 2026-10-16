@@ -13,7 +13,7 @@
     {
       "name": "design-kit",
       "source": "./plugins/design-kit",
-      "description": "Агент card-reviewer: проверка слайдов карточек маркетплейсов по стайлгайду до показа"
+      "description": "Скилл infographic (план, стайлгайд, промпты), агент card-reviewer и правило design-rules: проверка слайдов карточек маркетплейсов по стайлгайду до показа"
     },
     {
       "name": "usage-bar",
